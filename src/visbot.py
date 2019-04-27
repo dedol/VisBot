@@ -199,6 +199,9 @@ while True:
 						print(console_time(), " Поражение! Баланс: ", balance_text, " | Статистика: [", win_count, "|", lose_count, "] | Капч: ", captcha_count, sep="")
 						# print(console_time(), " Поражение! (", win_count, "|", lose_count, ") ", "Баланс: ", balance_text, " | Капч: ", captcha_count, sep="")
 						time.sleep(games_interval)
+					elif message["last_message"]["text"].split("\n")[0].find("сегодня слишком много") > -1:
+						print(console_time(), "Вы выиграли сегодня слишком много! Пауза 30 мин!")
+						time.sleep(30*60)
 					elif message["last_message"]["text"].split("\n")[0].find("Вы выиграли") > -1:
 						win_count += 1
 						balance += 1000
@@ -213,9 +216,6 @@ while True:
 						print(console_time(), "Ваш баланс:", balance_text, "coins")
 						# print(console_time(), "Начнем игру через", messages_interval, "сек!")
 						time.sleep(messages_interval)
-					elif message["last_message"]["text"].split("\n")[0].find("сегодня слишком много") > -1:
-						print(console_time(), "Вы выиграли сегодня слишком много! Пауза 30 мин!")
-						time.sleep(30*60)
 					else:
 						# print(console_time(), "Начнем игру через", messages_interval, "сек!")
 						time.sleep(messages_interval)
