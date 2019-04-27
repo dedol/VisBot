@@ -1,4 +1,4 @@
-## VisBot (v 1.1)
+## VisBot (v 1.2)
 VisBot – бот для игры в виселицу в сообществе vk.com/vcoingame1. Позволяет быстро и в автоматическом режиме отгадывать предложенные слова, получая за это VK Coins.
 
 [![Группа ВКонтакте](https://img.shields.io/badge/Группа-ВКонтакте-green.svg)](https://vk.com/visbot)
