@@ -65,18 +65,6 @@ def get_next_letter(search, exclude):
 	stat.sort(key=lambda i: i[1])
 	return (stat[-1][0])
 
-def check_license(user_id):
-	result = False
-	try:
-		secret_key = "VisBot_" + str(user_id) + "_dedol.ru_2019"
-		secret_key = str(hashlib.md5(secret_key.encode('utf-8')).hexdigest()[8:24])
-		r = requests.get('http://dedol.ru/vis/check', params={'id': user_id})
-		if r.text == secret_key:
-			result = True
-	except Exception as E:
-		pass
-	return result
-
 def captcha_handler(captcha):
 	global captcha_count
 	if captcha_enable:
@@ -150,7 +138,7 @@ def get_balanse_text(balance):
 
 print("")
 print("VisBot for vk.com/vcoingame1")
-print("Version: 1.1 | 27 Apr 2019")
+print("Version: 1.2 | 27 Apr 2019")
 print("(c) dedol.ru, 2019")
 print("")
 
@@ -169,33 +157,17 @@ try:
 	vk = vk_api.VkApi(token = token, captcha_handler=captcha_handler)
 	
 	user_id = vk.method("users.get")[0]["id"]
-	
-	# vk.method("groups.join", {"group_id": 181563694})
 
 	vkcoin_enable = False
 	if (key != "") and (master_id != 0):
 		vkcoin_enable = True
 		merchant = vkcoin.VKCoinApi(user_id=user_id, key=key)
 
-	app_status = vk.method("status.get", {"group_id": 181644870})["text"]
-	if app_status != "on":
-		print("Данная версия программы больше не будет работать! Вы можете скачать новую версию по ссылке github.com/dedol/VisBot. Все приобретенные лицензии сохранятся!")
-		input()
-		sys.exit(1)
-
 except Exception as E:
 	print("Exception:", E)
 	print("Ошибка при запуске программы! Проверьте свой vk token и параметры запуска!")
 	input()
 	sys.exit(1)
-
-# проверка used_id
-if not check_license(user_id):
-	print("Лицензия для пользователя id", user_id, " не найдена!", sep="")
-	print("Для использования этой программы необходимо приобрести лицензию! Для покупки лицензии обратитесь к администратору сообщества vk.com/visbot. Лицензия приобретается отдельно для каждого аккаунта и привязывается к вашему VK ID.")
-	input()
-	sys.exit(1)
-
 
 captcha_enable = True
 if rucaptcha_key == "":
@@ -241,6 +213,9 @@ while True:
 						print(console_time(), "Ваш баланс:", balance_text, "coins")
 						# print(console_time(), "Начнем игру через", messages_interval, "сек!")
 						time.sleep(messages_interval)
+					elif message["last_message"]["text"].split("\n")[0].find("сегодня слишком много") > -1:
+						print(console_time(), "Вы выиграли сегодня слишком много! Пауза 30 мин!")
+						time.sleep(30*60)
 					else:
 						# print(console_time(), "Начнем игру через", messages_interval, "сек!")
 						time.sleep(messages_interval)
