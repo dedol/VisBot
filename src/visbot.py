@@ -102,6 +102,13 @@ def console_time():
 	string = "[" + time.strftime('%d %b %H:%M:%S') + "][id" + str(user_id) + "]"
 	return string
 
+def decode_message(message):
+	result = ""
+	for sym in message:
+		if ord(sym) < 8001:
+			result += sym
+	return result.strip()
+
 def send(text):
 	random_id = random.randint(-2147483648, 2147483647)
 	vk.method("messages.send", {"peer_id": peer_id, "message": text, "random_id": random_id})
@@ -190,6 +197,9 @@ while True:
 		for message in messages:
 			if message["conversation"]["peer"]["id"] == peer_id:
 				first_message = False
+				message["last_message"]["text"] = decode_message(message["last_message"]["text"])
+				# print(message["last_message"]["text"].split("\n")[0])
+
 				if message["last_message"]["text"].split("\n")[0].find("Отгаданные буквы") == -1:
 	
 					if message["last_message"]["text"].split("\n")[0].find("Вы проиграли") > -1:
